@@ -92,17 +92,20 @@ ORDER BY movie_count DESC;
 
 SELECT 
     title,
+    revenue,
     CASE
         WHEN unit = 'Thousands' THEN revenue * 0.001
         WHEN unit = 'Billions' THEN revenue * 1000
         ELSE revenue
     END AS revenue_millions,
-    currency
+    currency,
+    unit
 FROM
     financials f
         JOIN
     movies m ON m.movie_id = f.movie_id
+        JOIN
+    languages l ON m.language_id = l.language_id
 WHERE
-    industry = 'Bollywood'
+    name = 'Hindi'
 ORDER BY revenue_millions DESC;
-    
