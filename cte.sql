@@ -36,3 +36,29 @@ FROM
     profit_table a
         JOIN
     rating_table b ON a.movie_id = b.movie_id;
+    
+
+# Select all Hollywood movies released after the year 2000
+with cte1 as (
+SELECT 
+    movie_id, title, release_year
+FROM
+    movies
+WHERE
+    industry = 'Hollywood'
+        AND release_year > 2000
+),
+        
+#  made more than 500 million $ profit or more profit
+cte2 as (
+SELECT 
+    f.movie_id, (revenue - budget) AS profit
+FROM
+    financials f
+        JOIN
+    movies m ON m.movie_id = f.movie_id
+WHERE
+    industry = 'Hollywood' AND (revenue - budget) > 500
+)
+
+select title, release_year, profit from cte1 c1 Join cte2 c2 on c1.movie_id=c2.movie_id;
